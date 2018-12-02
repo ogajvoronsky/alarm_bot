@@ -8,6 +8,7 @@ var token = require('./token');
 const bot = new TelegramBot(token, {polling: true});
 var client = new Client();
 const openhab_item_url = 'http://localhost:8080/rest/items/alarm_mode/state';
+const allowed_chat_id =  require('./allowed_chat_id.js')
 
 const cmdON = {
     headers: { "Content-Type": "text/plain",
@@ -21,27 +22,31 @@ const cmdOFF = {
     data: "OFF"
 };
 
+
 bot.onText(/alarm (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
   // of the message
 
   const chatId = msg.chat.id;
-  const resp = match[1]; // the captured "whatever"
-  var cmd = resp.trim().toUpperCase()
-  if ( cmd === 'ON') {
-    client.put(openhab_item_url, cmdON, function(data, response) {
-        console.log(data);
-        console.log(response);
-    });
-  }
+  const resp = match[1]; 
 
-  if (cmd === 'OFF') {
-    client.put(openhab_item_url, cmdOFF, function(data, response) {
-        console.log(data);
-        console.log(response);
-    });
+  if ( allowed_chat_id(chatId) ) {
+    var cmd = resp.trim().toUpperCase()
+    if ( cmd === 'ON') {
+      client.put(openhab_item_url, cmdON, function(data, response) {
+          console.log(data);
+          console.log(response);
+      });
+    }
+
+    if (cmd === 'OFF') {
+      client.put(openhab_item_url, cmdOFF, function(data, response) {
+          console.log(data);
+          console.log(response);
+      });
+    };
   };
- 
+  console.log("ChatID: ", chatId);
 });
 
