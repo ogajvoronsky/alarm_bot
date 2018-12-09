@@ -9,7 +9,7 @@
   "author": "Alex",
   "license": "ISC",
   "dependencies": {
-    "node-rest-client": "^3.1.0",
-    "node-telegram-bot-api": "^0.30.0"
+    "node-telegram-bot-api": "^0.30.0",
+    "unirest": "^0.5.1"
   }
 }

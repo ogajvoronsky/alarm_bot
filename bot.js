@@ -1,52 +1,39 @@
 const TelegramBot = require('node-telegram-bot-api');
-var Client = require('node-rest-client').Client;
-var token = require('./token');
-
-
+const allowed_chat_id =  require('./allowed_chat_id');  // check chat_id
+var alarm = require('./alarm');  // communication with alarm system
+var token = require('./token'); // return telegram token
 
 // Create a bot that uses 'polling' to fetch new updates
-const bot = new TelegramBot(token, {polling: true});
-var client = new Client();
-const openhab_item_url = 'http://localhost:8080/rest/items/alarm_mode/state';
-const allowed_chat_id =  require('./allowed_chat_id.js')
+const bot = new TelegramBot(token, {polling: true} );
 
-const cmdON = {
-    headers: { "Content-Type": "text/plain",
-               "Accept": "application/json"},
-    data: "ON"
+
+var alarm_options = {
+  reply_markup: JSON.stringify({
+    inline_keyboard: [
+      [{ text: 'Поставити на охорону', callback_data: 'ON' }],
+      [{ text: 'Зняти з охорони', callback_data: 'OFF' }],
+    ]
+  })
 };
-
-const cmdOFF = {
-    headers: { "Content-Type": "text/plain",
-               "Accept": "application/json"},
-    data: "OFF"
-};
-
 
 bot.onText(/alarm (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
   // of the message
+  const cmd = match[1]; 
 
-  const chatId = msg.chat.id;
-  const resp = match[1]; 
-
-  if ( allowed_chat_id(chatId) ) {
-    var cmd = resp.trim().toUpperCase()
-    if ( cmd === 'ON') {
-      client.put(openhab_item_url, cmdON, function(data, response) {
-          console.log(data);
-          console.log(response);
-      });
-    }
-
-    if (cmd === 'OFF') {
-      client.put(openhab_item_url, cmdOFF, function(data, response) {
-          console.log(data);
-          console.log(response);
-      });
-    };
+  if ( allowed_chat_id(msg.chat.id) ) {
+    alarm.send_cmd(cmd, function(validation_result) {
+      if ( validation_result === false ) {
+        bot.sendMessage(msg.chat.id, 'Доступні дії:', alarm_options);
+       } 
+    });
+     
   };
-  console.log("ChatID: ", chatId);
 });
 
+bot.on('callback_query', function(msg) {
+  if ( allowed_chat_id(msg.message.chat.id) ) {
+        alarm.send_cmd(msg.data, (validation_result) => {})
+  }
+});
