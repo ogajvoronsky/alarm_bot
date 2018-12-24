@@ -1,4 +1,4 @@
-// openhab alarm communication modude
+// openhab rest communication modude
 var unirest = require('unirest');
 const openhab_item_url = "http://localhost:8080/rest/items/alarm_mode/state";
 
