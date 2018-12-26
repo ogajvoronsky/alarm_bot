@@ -38,7 +38,7 @@ bot.on('callback_query', function(msg) {
   
   if ( allowed_chat_id(msg.message.chat.id) ) {
         alarm.send_cmd(msg.data, (validation_result) => {});
-        bot.sendMessage(msg.message.chat.id, msg.from.first_name + "виконує: ");
+        bot.sendMessage(msg.message.chat.id, msg.from.first_name + " виконує дію:");
   }
 });
 
