@@ -34,8 +34,11 @@ bot.onText(/alarm (.+)/, (msg, match) => {
 });
 
 bot.on('callback_query', function(msg) {
+  console.log(msg);
+  
   if ( allowed_chat_id(msg.message.chat.id) ) {
-        alarm.send_cmd(msg.data, (validation_result) => {})
+        alarm.send_cmd(msg.data, (validation_result) => {});
+        bot.sendMessage(msg.message.chat.id, msg.from.first_name);
   }
 });
 
