@@ -1,4 +1,4 @@
-// check is it allowed chat to receive commands from
+//MODULE: check is it allowed chat to receive commands from
 
 allowed_chat_ids = [-319395610, 303847037];
 

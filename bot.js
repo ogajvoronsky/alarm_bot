@@ -3,6 +3,7 @@ const allowed_chat_id =  require('./allowed_chat_id');  // check chat_id
 var alarm = require('./alarm');  // communication with alarm system
 var token = require('./token'); // return telegram token
 
+
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true} );
 
@@ -37,3 +38,5 @@ bot.on('callback_query', function(msg) {
         alarm.send_cmd(msg.data, (validation_result) => {})
   }
 });
+
+
