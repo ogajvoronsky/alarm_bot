@@ -50,7 +50,10 @@ bot.on('callback_query', function(msg) {
 app.get('/motion-web-hook', function (req, res) {
   
   //send picture to chat
-    bot.sendPhoto(post_chat_id, cam.get_picture() );
+    cam.get_picture( (picture) => {
+      bot.sendPhoto(post_chat_id, picture);
+    });
+    
 
   res.send('Picture sent to chat..');
 });
