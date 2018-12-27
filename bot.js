@@ -2,6 +2,10 @@ const TelegramBot = require('node-telegram-bot-api');
 const allowed_chat_id =  require('./allowed_chat_id');  // check chat_id
 var alarm = require('./alarm');  // communication with alarm system
 var token = require('./token'); // return telegram token
+var express = require('express');
+var cam = require('./cam');
+var app = express();
+const post_chat_id = '-319395610';
 
 
 // Create a bot that uses 'polling' to fetch new updates
@@ -41,5 +45,15 @@ bot.on('callback_query', function(msg) {
         bot.sendMessage(msg.message.chat.id, msg.from.first_name + " виконує дію:");
   }
 });
+
+// Recieve web-hook from CCTV
+app.get('/motion-web-hook', function (req, res) {
+  
+  //send picture to chat
+    bot.sendPhoto(post_chat_id, cam.get_picture() );
+
+  res.send('Picture sent to chat..');
+});
+
 
 
