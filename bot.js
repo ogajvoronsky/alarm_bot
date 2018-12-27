@@ -56,4 +56,8 @@ app.get('/motion-web-hook', function (req, res) {
 });
 
 
+app.listen(8880);
+
+
+
 
