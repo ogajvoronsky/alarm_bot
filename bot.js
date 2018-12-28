@@ -52,6 +52,8 @@ bot.on('callback_query', function(msg) {
 // Recieve web-hook from CCTV
 app.get('/motion-web-hook', function (req, res) {
   
+
+  if sent_time 
   //send picture to chat
 
   http.get(url.parse(cam_picture_url), function(res) {
@@ -65,6 +67,8 @@ app.get('/motion-web-hook', function (req, res) {
         //of all of them together
         var picture = Buffer.concat(data);
         bot.sendPhoto(post_chat_id, picture);
+        sent_time = new Date();
+
       });
   });
 
