@@ -3,9 +3,12 @@ const allowed_chat_id =  require('./allowed_chat_id');  // check chat_id
 var alarm = require('./alarm');  // communication with alarm system
 var token = require('./token'); // return telegram token
 var express = require('express');
-var cam = require('./cam');
+var http = require('http');
+var url = require('url');
 var app = express();
 const post_chat_id = '-319395610';
+const cam_picture_url = 'http://admin:m607Remeniv@192.168.44.190/Streaming/channels/101/picture';
+
 
 
 // Create a bot that uses 'polling' to fetch new updates
@@ -50,10 +53,20 @@ bot.on('callback_query', function(msg) {
 app.get('/motion-web-hook', function (req, res) {
   
   //send picture to chat
-    cam.get_picture( (picture) => {
-      bot.sendPhoto(post_chat_id, picture);
-    });
-    
+
+  http.get(url.parse(cam_picture_url), function(res) {
+    var data = [];
+
+    res.on('data', function(chunk) {
+        data.push(chunk);
+    }).on('end', function() {
+        //at this point data is an array of Buffers
+        //so Buffer.concat() can make us a new Buffer
+        //of all of them together
+        var picture = Buffer.concat(data);
+        bot.sendPhoto(post_chat_id, picture);
+      });
+  });
 
   res.send('Picture sent to chat..');
 });
