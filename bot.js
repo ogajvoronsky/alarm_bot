@@ -49,12 +49,15 @@ bot.on('callback_query', function(msg) {
   }
 });
 
-// Recieve web-hook from CCTV
-app.get('/motion-web-hook', function (req, res) {
-  
+// Notify telegram chat
+app.get('/send_telegram', function (req, res) {
+  console.log(req.query.user);
+  res.send(req.query.message);
+});
 
-  if sent_time 
-  //send picture to chat
+
+// Receive web-hook from CCTV
+app.get('/motion-web-hook', function (req, res) {
 
   http.get(url.parse(cam_picture_url), function(res) {
     var data = [];
