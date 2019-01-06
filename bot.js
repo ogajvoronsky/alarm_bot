@@ -1,9 +1,9 @@
 const TelegramBot = require('node-telegram-bot-api');
 const allowed_chat_id =  require('./allowed_chat_id');  // check chat_id
+const cam_snapshot = require('./cam_snapshot');
 var alarm = require('./alarm');  // communication with alarm system
 var token = require('./token'); // return telegram token
 var express = require('express');
-var http = require('http');
 var url = require('url');
 var app = express();
 var sent_pictures_count = 0;
@@ -63,31 +63,7 @@ app.get('/send_telegram', function (req, res) {
 
 // Receive web-hook from CCTV
 app.get('/motion-web-hook', function (req, res) {
-  now = new Date();
-  if ((sent_time - now) > send_timegap ) {
-    sent_time = now;
-    sent_pictures_count = 0;
-  }; 
-  if (sent_pictures_count < send_max_count) {
-    sent_pictures_count = sent_pictures_count + 1;
-    http.get(url.parse(cam_picture_url), function(res) {
-      var data = [];
-  
-      res.on('data', function(chunk) {
-          data.push(chunk);
-      }).on('end', function() {
-          //at this point data is an array of Buffers
-          //so Buffer.concat() can make us a new Buffer
-          //of all of them together
-          var picture = Buffer.concat(data);
-          bot.sendPhoto(post_chat_id, picture);
-          sent_time = new Date();
-          sent_pictures_count = sent_pictures_count + 1;
-      
-        });
-    });
-  };  
-  res.send('Picture sent to chat..');
+    cam_snapshot(bot, cam_picture_url, req, res);
 });  
 
 app.listen(8880);
