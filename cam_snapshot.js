@@ -1,7 +1,7 @@
 var http = require('http');
 var url = require('url');
 
-module.exports = function(bot, cam_url, req, res){
+module.exports = function(bot, post_chat_id, cam_url, req, res){
     http.get(url.parse(cam_url), function(res) {
         var data = [];
 

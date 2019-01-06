@@ -62,7 +62,7 @@ app.get('/send_telegram', function (req, res) {
 
 // Receive web-hook from CCTV
 app.get('/motion-web-hook', function (req, res) {
-    cam_snapshot(bot, cam_picture_url, req, res);
+    cam_snapshot(bot, post_chat_id, cam_picture_url, req, res);
 });  
 
 app.listen(8880);
