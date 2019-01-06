@@ -1,4 +1,5 @@
 var http = require('http');
+var url = require('url');
 
 module.exports = function(bot, cam_url, req, res){
     http.get(url.parse(cam_url), function(res) {

@@ -4,7 +4,6 @@ const cam_snapshot = require('./cam_snapshot');
 var alarm = require('./alarm');  // communication with alarm system
 var token = require('./token'); // return telegram token
 var express = require('express');
-var url = require('url');
 var app = express();
 var sent_pictures_count = 0;
 var sent_time = 0;
