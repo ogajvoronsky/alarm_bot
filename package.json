@@ -9,6 +9,7 @@
   "author": "Alex",
   "license": "ISC",
   "dependencies": {
+    "asterisk-manager": "^0.1.16",
     "date-and-time": "^0.6.3",
     "express": "^4.16.4",
     "node-telegram-bot-api": "^0.30.0",

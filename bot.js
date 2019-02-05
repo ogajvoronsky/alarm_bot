@@ -21,7 +21,7 @@ var reset_pic_counter = function() {
   sent_pictures_count = 0;
 };
 
-var SendTelegramPic = function() {
+var SendTelegramPic = function(telegram_chat_id) {
   http.get(url.parse(cam_picture_url), function(res) {
     var data = [];
 
@@ -66,12 +66,10 @@ bot.onText(/alarm (.+)/, (msg, match) => {
 });
 
 bot.onText(/c/, (msg, match) => {
-  // 'msg' is the received Message from Telegram
-  // 'match' is the result of executing the regexp above on the text content
-  // of the message
+  
   const cmd = match[1]; 
   if ( allowed_chat_id(msg.chat.id) ) {
-    SendTelegramPic();
+    SendTelegramPic(msg.chat.id);
   }; 
 });
      
@@ -81,7 +79,7 @@ bot.on('callback_query', function(msg) {
   
   if ( allowed_chat_id(msg.message.chat.id) ) {
     if (msg.data == 'CAM1_SHOT') { 
-      SendTelegramPic();
+      SendTelegramPic(msg.chat.id);
       return; 
     };
         alarm.send_cmd(msg.data, (validation_result) => {});
@@ -89,12 +87,17 @@ bot.on('callback_query', function(msg) {
   }
 });
 
-// Notify telegram chat
+// Notify telegram chat - not used yet
 app.get('/send_telegram', function (req, res) {
   console.log(req.query.user);
   res.send(req.query.message);
 });
 
+// web-hook from alarm system
+app.get('/alarm', function (req, res) {
+  console.log(req);
+  res.send(req.query.message);
+});
 
 // web-hook from CCTV
 app.get('/motion-web-hook', function (req, res) {
@@ -103,7 +106,7 @@ app.get('/motion-web-hook', function (req, res) {
   };
   if (sent_pictures_count < send_max_count) {
     sent_pictures_count = sent_pictures_count + 1;
-    SendTelegramPic();
+    SendTelegramPic(telegram_chat_id);
   };
     
   res.send('Picture sent to chat..');
