@@ -94,8 +94,8 @@ app.get('/send_telegram', function (req, res) {
 });
 
 // web-hook from alarm system
-app.get('/alarm', function (req, res) {
-  console.log(req);
+app.get('/voice-notify', function (req, res) {
+  console.log(req.query);
   res.send(req.query.message);
 });
 
