@@ -79,7 +79,7 @@ bot.on('callback_query', function(msg) {
   
   if ( allowed_chat_id(msg.message.chat.id) ) {
     if (msg.data == 'CAM1_SHOT') { 
-      SendTelegramPic(msg.chat.id);
+      SendTelegramPic(msg.message.chat.id);
       return; 
     };
         alarm.send_cmd(msg.data, (validation_result) => {});
