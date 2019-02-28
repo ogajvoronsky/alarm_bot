@@ -13,6 +13,7 @@ const send_timegap = 1200000; //ms = 20minutes
 const send_max_count = 10; // max pictures in timegap
 const telegram_chat_id = '-319395610';
 const cam_picture_url = 'http://admin:m607Remeniv@192.168.44.190/Streaming/channels/101/picture';
+const stream_url = 'https://rio-remeniv.smartctl.com.ua/fn1Yln1AH5lSWXHp5TvtJfIjC3i0je/mp4/8OreTXoQVK/entrance/s.mp4'
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true} );
@@ -21,7 +22,7 @@ var reset_pic_counter = function() {
   sent_pictures_count = 0;
 };
 
-var SendTelegramPic = function(telegram_chat_id) {
+var SendTelegramPic = function(telegram_chat_id, options) {
   http.get(url.parse(cam_picture_url), function(res) {
     var data = [];
 
@@ -32,7 +33,9 @@ var SendTelegramPic = function(telegram_chat_id) {
         //so Buffer.concat() can make us a new Buffer
         //of all of them together
         picture = Buffer.concat(data);
-        bot.sendPhoto(telegram_chat_id, picture);
+        // https://rio-remeniv.smartctl.com.ua/fn1Yln1AH5lSWXHp5TvtJfIjC3i0je/mp4/8OreTXoQVK/entrance/s.mp4
+        // permanent key: fn1Yln1AH5lSWXHp5TvtJfIjC3i0je
+        bot.sendPhoto(telegram_chat_id, picture, options);
     })
   })
 }
@@ -69,7 +72,7 @@ bot.onText(/c/, (msg, match) => {
   
   const cmd = match[1]; 
   if ( allowed_chat_id(msg.chat.id) ) {
-    SendTelegramPic(msg.chat.id);
+    SendTelegramPic(msg.chat.id, { caption: stream_url });
   }; 
 });
      
@@ -97,6 +100,7 @@ app.get('/send_telegram', function (req, res) {
 app.get('/voice-notify', function (req, res) {
   console.log(req.query);
   res.send(req.query.message);
+  
 });
 
 // web-hook from CCTV
