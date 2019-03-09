@@ -14,6 +14,9 @@ const send_max_count = 10; // max pictures in timegap
 const telegram_chat_id = '-319395610';
 const cam_picture_url = 'http://admin:m607Remeniv@192.168.44.190/Streaming/channels/101/picture';
 const stream_url = 'https://rio-remeniv.smartctl.com.ua/fn1Yln1AH5lSWXHp5TvtJfIjC3i0je/mp4/8OreTXoQVK/entrance/s.mp4'
+var ami = new require('asterisk-manager')('5038','10.9.0.2','alarm_notifier','alarmsecret', true);
+ami.keepConnected();
+ami.on('managerevent', function(evt) {});
 
 // Create a bot that uses 'polling' to fetch new updates
 const bot = new TelegramBot(token, {polling: true} );
@@ -100,6 +103,18 @@ app.get('/send_telegram', function (req, res) {
 app.get('/voice-notify', function (req, res) {
   console.log(req.query);
   res.send(req.query.message);
+  ami.action({
+    'action':'originate',
+    'channel':'PJSIP/002+380668859258@goip',
+    'context':'alarm-remeniv',
+    'timeout':120000,
+    'exten':1234,
+    'priority':1,
+    // 'variable':{
+      // 'name1':'value1',
+      // 'name2':'value2'
+    // }
+  }, function(err, res) {});
   
 });
 
@@ -117,6 +132,7 @@ app.get('/motion-web-hook', function (req, res) {
 });  
 
 app.listen(8880);
+
 
 
 
