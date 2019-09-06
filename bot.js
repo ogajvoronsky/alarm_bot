@@ -55,7 +55,16 @@ var alarm_options = {
   })
 };
 
-bot.onText(/alarm (.+)/, (msg, match) => {
+
+bot.onText(/help/, (msg, match) => {
+
+  if ( allowed_chat_id(msg.chat.id) ) {
+        bot.sendMessage(msg.chat.id, 'Доступні дії:', alarm_options);
+	bot.sendMessage(msg.chat.id,'/a on/off - охорона');
+       };
+});
+
+bot.onText(/a (.+)/, (msg, match) => {
   // 'msg' is the received Message from Telegram
   // 'match' is the result of executing the regexp above on the text content
   // of the message
