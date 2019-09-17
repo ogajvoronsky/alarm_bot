@@ -13,7 +13,7 @@ const send_timegap = 1200000; //ms = 20minutes
 const send_max_count = 10; // max pictures in timegap
 const telegram_chat_id = '-319395610';
 const cam_picture_url = 'http://admin:m607Remeniv@192.168.44.190/Streaming/channels/101/picture';
-const stream_url = 'https://rio-remeniv.smartctl.com.ua/fn1Yln1AH5lSWXHp5TvtJfIjC3i0je/mp4/8OreTXoQVK/entrance/s.mp4'
+const stream_url = 'https://rio-remeniv.smartctl.com.ua/23Q5sRMiHZBNDbmNZ5Zu6clTo2Wo6V/mp4/84XJuUKklH/AR8NM1ewvP/s.mp4'
 var ami = new require('asterisk-manager')('5038','10.9.0.2','alarm_notifier','alarmsecret', true);
 ami.keepConnected();
 ami.on('managerevent', function(evt) {});
