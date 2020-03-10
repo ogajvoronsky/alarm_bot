@@ -10,7 +10,7 @@ var url = require('url');
 var sent_pictures_count = 0;
 var pics_buffer =  [];
 const send_timegap = 1200000; //ms = 20minutes
-const send_max_count = 10; // max pictures in timegap
+const send_max_count = 20; // max pictures in timegap
 const telegram_chat_id = '-319395610';
 const cam_picture_url = 'http://admin:m607Remeniv@192.168.44.190/Streaming/channels/101/picture';
 const stream_url = 'https://rio-remeniv.smartctl.com.ua/UQyrWeI9bPDU5xvXBzBtNg328er5RW/mp4/l8Jh6QJEKl/AR8NM1ewvP/s.mp4'
@@ -114,7 +114,8 @@ app.get('/voice-notify', function (req, res) {
   res.send(req.query.message);
   ami.action({
     'action':'originate',
-    'channel':'PJSIP/002+380668859258@goip',
+    'channel':'local/alarmrio',
+//    'channel':'PJSIP/101',
     'context':'alarm-remeniv',
     'timeout':120000,
     'exten':1234,

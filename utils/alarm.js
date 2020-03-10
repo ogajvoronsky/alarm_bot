@@ -1,6 +1,6 @@
 // MODULE: openhab rest communication
 var unirest = require('unirest');
-const openhab_item_url = "http://localhost:8080/rest/items/alarm_mode/state";
+const openhab_item_url = "http://10.9.0.254:8081/rest/items/alarm_mode/state";
 module.exports.send_cmd = async function(cmd, cb) {
 
     const put_headers = { 'Accept': 'application/json', 'Content-Type': 'text/plain' }
